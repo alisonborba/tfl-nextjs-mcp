@@ -2,12 +2,17 @@
 'use client';
 
 import { useState } from 'react';
+import { useCompletion } from '@ai-sdk/react';
 
 export default function HomePage() {
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
   const [response, setResponse] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  const { completion, complete } = useCompletion({
+    api: '/api/completion',
+  });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -57,6 +62,20 @@ export default function HomePage() {
           <pre className="text-sm overflow-auto ">{JSON.stringify(response, null, 2)}</pre>
         </div>
       )}
+
+<div>
+      <div
+        onClick={async () => {
+          await complete(
+            'Please schedule a call with Sonny and Robby for tomorrow at 10am ET for me!',
+          );
+        }}
+      >
+        Schedule a call
+      </div>
+
+      {completion}
+    </div>
     </main>
   );
 }
