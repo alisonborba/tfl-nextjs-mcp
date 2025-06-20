@@ -28,17 +28,17 @@ export async function POST(req: Request) {
         // const transport = new StreamableHTTPClientTransport(
         //     new URL('http://localhost:3000/mcp'),
         // );
-        const customClient = await experimental_createMCPClient({
-            transport,
-        });
+        // const customClient = await experimental_createMCPClient({
+        //     transport,
+        // });
 
         const toolSetOne = await stdioClient.tools();
         // const toolSetTwo = await sseClient.tools();
-        const toolSetThree = await customClient.tools();
+        // const toolSetThree = await customClient.tools();
         const tools = {
             ...toolSetOne,
             // ...toolSetTwo,
-            ...toolSetThree, // note: this approach causes subsequent tool sets to override tools with the same name
+            // ...toolSetThree, // note: this approach causes subsequent tool sets to override tools with the same name
         };
 
         const response = await streamText({
@@ -49,7 +49,7 @@ export async function POST(req: Request) {
             onFinish: async () => {
                 await stdioClient.close();
                 // await sseClient.close();
-                await customClient.close();
+                // await customClient.close();
             },
             // Closing clients onError is optional
             // - Closing: Immediately frees resources, prevents hanging connections
@@ -58,7 +58,7 @@ export async function POST(req: Request) {
                 console.error(error);
                 await stdioClient.close();
                 // await sseClient.close();
-                await customClient.close();
+                // await customClient.close();
             },
         });
 
