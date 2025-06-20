@@ -15,7 +15,7 @@ export async function POST(req: Request) {
 
     const res = await fetch('https://tfl-nextjs-mcp.vercel.app/mcp', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json, text/event-stream' },
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
         body: JSON.stringify(body)
     });
 
