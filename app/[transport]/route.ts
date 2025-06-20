@@ -1,31 +1,48 @@
-// app/api/journey/route.ts
-import { NextResponse } from 'next/server';
+import { createMcpHandler } from "@vercel/mcp-adapter";
 
-export async function POST(req: Request) {
-    const { from, to } = await req.json();
+// const tflApiUrl = "https://api.tfl.gov.uk";
+// const TFL_APP_KEY = `${process.env.TFL_APP_KEY}`;
 
-    // Monta envelope JSON-RPC para MCP
-    const body = {
-        jsonrpc: "2.0",
-        id: 1,
-        method: "callTool",
-        params: {
-            name: "getJourney",
-            arguments: { from, to }
+const handler = createMcpHandler(server => {
+    server.tool(
+        'getJourney',
+        'Get public transport route using TFL API',
+        {
+            from: { type: 'string' },
+            to: { type: 'string' }
+        },
+        ({ from, to }) => {
+            const summary = `Journey from ${from} to ${to} is 10 minutes.`;
+
+            return {
+                content: [
+                    {
+                        type: "text",
+                        text: summary
+                    }
+                ]
+            };
+            // async ({ from, to }) => {
+            //     const res = await fetch(`${tflApiUrl}/Journey/JourneyResults/${from}/to/${to}`);
+            //     const data: any = await res.json();
+            //     return { journeys: Array.isArray(data?.journeys) ? data.journeys : [] };
+            // }
         }
-    };
-
-    const res = await fetch('https://tfl-nextjs-mcp.vercel.app/mcp', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json, text/event-stream' },
-        body: JSON.stringify(body)
-    });
-
-    const result = await res.json();
-
-    // Normaliza resposta
-    if (result?.result?.content?.[0]?.text) {
-        return NextResponse.json({ journey: result.result.content[0].text });
+    );
+}, {
+    capabilities: {
+        tools: {
+            getJourney: {
+                description: 'Get public transport route using TFL API',
+            }
+        }
     }
-    return NextResponse.json(result);
-}
+}, {
+    redisUrl: process.env.REDIS_URL,
+    sseEndpoint: "/sse",
+    streamableHttpEndpoint: "/mcp",
+    verboseLogs: true,
+    maxDuration: 58,
+});
+
+export { handler as GET, handler as POST };
