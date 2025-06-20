@@ -20,12 +20,23 @@ async function main() {
     }
   );
 
+
   await client.connect(transport);
 
   console.log("Connected", client.getServerCapabilities());
 
   const result = await client.listTools();
-  console.log(result);
+  console.log(JSON.stringify(result, null, 2));
+
+
+  // const response = await client.callTool({
+  //   name: "getJourney",
+  //   arguments: {
+  //     from: "9400ZZLUACT",
+  //     to: "9400ZZLUKSX",
+  //   },
+  // });
+  // console.log("getJourney result:", response);
 }
 
 main();
