@@ -1,7 +1,7 @@
 import { createMcpHandler } from "@vercel/mcp-adapter";
 
 // const tflApiUrl = "https://api.tfl.gov.uk";
-const TFL_APP_KEY = `${process.env.TFL_APP_KEY}`;
+// const TFL_APP_KEY = `${process.env.TFL_APP_KEY}`;
 
 const handler = createMcpHandler(server => {
     server.tool(
