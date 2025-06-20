@@ -9,10 +9,10 @@ const handler = createMcpHandler(server => {
         'Get public transport route using TFL API',
         {
             from: { type: 'string' },
-            // to: { type: 'string' }
+            to: { type: 'string' }
         },
-        ({ from }) => {
-            const summary = `Journey from ${from}.`;
+        ({ from, to }) => {
+            const summary = `Journey from ${from} to ${to} is 69 minutes.`;
 
             return {
                 content: [
@@ -42,7 +42,7 @@ const handler = createMcpHandler(server => {
     sseEndpoint: "/sse",
     streamableHttpEndpoint: "/mcp",
     verboseLogs: true,
-    maxDuration: 60,
+    maxDuration: 58,
 });
 
 export { handler as GET, handler as POST };
