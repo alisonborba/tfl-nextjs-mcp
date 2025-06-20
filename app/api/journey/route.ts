@@ -17,7 +17,7 @@ export async function POST(req: Request) {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Accept': 'application/json'
+            'Accept': 'application/json, text/event-stream'
         },
         body: JSON.stringify(body)
     });
