@@ -9,10 +9,10 @@ const handler = createMcpHandler(server => {
         'Get public transport route using TFL API',
         {
             from: { type: 'string' },
-            to: { type: 'string' }
+            // to: { type: 'string' }
         },
-        ({ from, to }) => {
-            const summary = `Journey from ${from} to ${to}.`;
+        ({ from }) => {
+            const summary = `Journey from ${from}.`;
 
             return {
                 content: [
