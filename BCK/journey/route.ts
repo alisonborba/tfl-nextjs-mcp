@@ -23,6 +23,7 @@ export async function POST(req: Request) {
     });
 
     const result = await res.json();
+    console.log('result', result);
 
     if (result?.result?.content?.[0]?.text) {
         return NextResponse.json({ journey: result.result.content[0].text });

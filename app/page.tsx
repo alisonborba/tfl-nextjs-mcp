@@ -7,26 +7,34 @@ import { useCompletion } from '@ai-sdk/react';
 export default function HomePage() {
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
+  const [query, setQuery] = useState('');
   const [response, setResponse] = useState(null);
   const [loading, setLoading] = useState(false);
-
-  const { completion, complete } = useCompletion({
-    api: '/api/completion',
-  });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setResponse(null);
 
+    console.log('handleSubmit', `${from} to ${to}`);
+
     try {
-      const gptResponse = await fetch('/api/query-mcp', {
+      const classifyResponse = await fetch('/api/classify-query', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ from, to })
+        // body: JSON.stringify({ query: `${from} to ${to}` })
+        body: JSON.stringify({ query })
       });
+      const data = await classifyResponse.json();
+      console.log('data', data);
 
-      const data = await gptResponse.json();
+      // const gptResponse = await fetch('/api/query-mcp', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify({ from, to })
+      // });
+
+      // const data = await gptResponse.json();
       setResponse(data);
     } catch (err) {
       console.log('err', err);
@@ -39,6 +47,12 @@ export default function HomePage() {
     <main className="max-w-xl mx-auto py-10 px-4">
       <h1 className="text-2xl font-bold mb-6">London Journey Planner (MCP + GPT)</h1>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+      <input
+          placeholder="..."
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          className="border rounded px-3 py-2"
+        />
         <input
           placeholder="From (e.g. Acton Town)"
           value={from}
@@ -62,20 +76,6 @@ export default function HomePage() {
           <pre className="text-sm overflow-auto ">{JSON.stringify(response, null, 2)}</pre>
         </div>
       )}
-
-<div>
-      <div
-        onClick={async () => {
-          await complete(
-            'Please schedule a call with Sonny and Robby for tomorrow at 10am ET for me!',
-          );
-        }}
-      >
-        Schedule a call
-      </div>
-
-      {completion}
-    </div>
     </main>
   );
 }
