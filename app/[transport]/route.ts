@@ -8,11 +8,10 @@ const handler = createMcpHandler(server => {
         'getJourney',
         'Get public transport route using TFL API',
         {
-            from: { type: 'string' },
-            to: { type: 'string' }
+            from: { query: 'string' },
         },
-        ({ from, to }) => {
-            const summary = `Journey from ${from} to ${to} is 10 minutes.`;
+        ({ query }) => {
+            const summary = `Journey from ${query} is 10 minutes.`;
 
             return {
                 content: [
@@ -22,11 +21,6 @@ const handler = createMcpHandler(server => {
                     }
                 ]
             };
-            // async ({ from, to }) => {
-            //     const res = await fetch(`${tflApiUrl}/Journey/JourneyResults/${from}/to/${to}`);
-            //     const data: any = await res.json();
-            //     return { journeys: Array.isArray(data?.journeys) ? data.journeys : [] };
-            // }
         }
     );
 }, {
