@@ -2,7 +2,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useCompletion } from '@ai-sdk/react';
+// import { useCompletion } from '@ai-sdk/react';
 
 export default function HomePage() {
   const [from, setFrom] = useState('');
