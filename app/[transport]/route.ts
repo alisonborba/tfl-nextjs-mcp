@@ -8,7 +8,7 @@ import { z } from "zod";
 const handler = createMcpHandler(
     server => {
         server.tool(
-            'getJourney',
+            'get_journey',
             'Get public transport route using TFL API',
             {
                 query: z.string()
